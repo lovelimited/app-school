@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  base: './',
+  base: '/app-school/',
   plugins: [
     react(),
     tailwindcss(),
