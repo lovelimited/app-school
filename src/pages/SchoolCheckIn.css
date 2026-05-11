@@ -1,0 +1,228 @@
+.dashboard-container {
+  padding-bottom: 90px;
+  background-color: #f8fafc00;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.clock-header {
+  text-align: center;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  color: white;
+  border-bottom-left-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+  box-shadow: 0 6px 12px -3px rgba(37, 99, 235, 0.2);
+  margin-bottom: 1rem;
+}
+
+.clock-date {
+  font-size: 1.5rem;
+  font-weight: 600;
+  opacity: 0.95;
+  margin: 0 0 0.15rem 0;
+}
+
+.clock-time {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.dashboard-content {
+  padding: 0 1.25rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.dashboard-notice {
+  margin-bottom: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 1rem;
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  color: #9a3412;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.08);
+}
+
+.dashboard-notice p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.dashboard-notice span {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+  color: #c2410c;
+}
+
+.banner-container {
+  margin-bottom: 1.5rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  background-color: white; /* เปลี่ยนจากเทาเป็นขาว */
+}
+
+.dashboard-banner {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.banner-iframe-wrapper {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-top: 25%; /* 4:1 Aspect Ratio for Banners */
+  background-color: white; /* พื้นหลังสีขาว */
+}
+
+.dashboard-banner-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: #64748b;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.loading-spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.chart-card {
+  background-color: white;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(0,0,0,0.02);
+}
+
+.chart-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 1.25rem 0;
+  padding-left: 0.75rem;
+  border-left: 5px solid;
+}
+
+.student-title {
+  border-left-color: #3b82f6;
+}
+
+.teacher-title {
+  border-left-color: #10b981;
+}
+
+.chart-wrapper {
+  width: 100%;
+}
+
+.student-wrapper {
+  height: 320px; 
+}
+
+.teacher-wrapper {
+  height: 300px;
+}
+
+.action-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  margin-top: 1.5rem;
+  transition: transform 0.1s, box-shadow 0.2s;
+  border: none;
+}
+
+.action-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-student {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+}
+
+.btn-teacher {
+  background: linear-gradient(135deg, #059669, #10b981);
+}
+
+.custom-tooltip {
+  background: white;
+  padding: 0.875rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.tooltip-title {
+  font-weight: 800;
+  margin: 0 0 0.35rem 0;
+  color: #1e293b;
+  font-size: 1.05rem;
+}
+
+.tooltip-desc {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+  max-width: 220px;
+  line-height: 1.5;
+}
+
+.no-data-msg {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: #94a3b8;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
