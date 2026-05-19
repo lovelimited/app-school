@@ -1,22 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import MainLayout from './pages/MainLayout';
 import PWAPrompt from './components/PWAPrompt';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const auth = localStorage.getItem('school_app_auth');
-    if (auth === 'true') {
-      setIsAuthenticated(true);
-    }
-    setIsLoading(false);
-  }, []);
-
-  if (isLoading) return null;
+  const [isAuthenticated, setIsAuthenticated] = useState(() => localStorage.getItem('school_app_auth') === 'true');
 
   return (
     <>
