@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
-@theme {
+:root {
   --font-sans: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
 
   --color-bg-main: #f0f2ff;
@@ -70,27 +70,27 @@ body::before {
   100% { opacity: 1; transform: scale(1.05); }
 }
 
-@utility animate-fade-in-up {
+.animate-fade-in-up {
   animation: fadeInUp 0.4s ease both;
 }
 
-@utility animate-slide-up {
+.animate-slide-up {
   animation: slideUp 0.3s ease both;
 }
 
-@utility animate-fab-in {
+.animate-fab-in {
   animation: fabIn 0.4s ease both;
 }
 
-@utility animate-badge-pulse {
+.animate-badge-pulse {
   animation: badgePulse 2s ease-in-out infinite;
 }
 
-@utility animate-fade-in {
+.animate-fade-in {
   animation: fadeInUp 0.25s ease both;
 }
 
-@utility grade-circle {
+.grade-circle {
   &::after {
     content: '';
     position: absolute;

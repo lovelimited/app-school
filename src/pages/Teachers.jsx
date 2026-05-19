@@ -8,8 +8,14 @@ function Teachers() {
   const [error, setError] = useState(null);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
 
-  const sortByOrder = (data) => {
-    const savedOrder = JSON.parse(localStorage.getItem('school_teachers_order') || '[]');
+  const sortByOrder = (data, customOrderStr = null) => {
+    const orderToUse = customOrderStr || localStorage.getItem('school_teachers_order') || '[]';
+    let savedOrder = [];
+    try {
+      savedOrder = JSON.parse(orderToUse);
+    } catch {
+      savedOrder = [];
+    }
     if (savedOrder.length === 0) return data;
     return [...data].sort((a, b) => {
       const ia = savedOrder.indexOf(String(a.ID));
@@ -40,15 +46,29 @@ function Teachers() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 8000);
       
-      const response = await fetch(`${API_URL}?action=getTeachers`, {
-        signal: controller.signal
-      });
+      const [response, configRes] = await Promise.all([
+        fetch(`${API_URL}?action=getTeachers`, { signal: controller.signal }),
+        fetch(`${API_URL}?action=getConfig`, { signal: controller.signal }).catch(() => null)
+      ]);
       clearTimeout(timeoutId);
+
+      let serverOrder = null;
+      if (configRes && configRes.ok) {
+        try {
+          const configResult = await configRes.json();
+          if (configResult.status === 'success' && configResult.data?.school_teachers_order) {
+            serverOrder = configResult.data.school_teachers_order;
+            localStorage.setItem('school_teachers_order', serverOrder);
+          }
+        } catch (e) {
+          console.error("Error parsing config", e);
+        }
+      }
       
       const result = await response.json();
       
       if (result.status === 'success') {
-        const sorted = sortByOrder(result.data);
+        const sorted = sortByOrder(result.data, serverOrder);
         setTeachers(sorted);
         try {
           localStorage.setItem('school_teachers_cache', JSON.stringify(result.data));

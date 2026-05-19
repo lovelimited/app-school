@@ -67,7 +67,7 @@ function Settings() {
     try {
       await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'updateConfig', data: { key: 'dashboard_banner_url', value: bannerUrl.trim() } }) });
       Swal.fire('สำเร็จ', 'อัปเดตรูปแบนเนอร์หน้าหลักแล้ว', 'success');
-    } catch (err) { Swal.fire('ข้อผิดพลาด', 'ไม่สามารถบันทึกแบนเนอร์ได้', 'error'); }
+    } catch { Swal.fire('ข้อผิดพลาด', 'ไม่สามารถบันทึกแบนเนอร์ได้', 'error'); }
     finally { setIsSubmitting(false); }
   };
 
@@ -146,14 +146,32 @@ function Settings() {
     setOverIndex(idx);
   };
 
-  const saveOrderToLocal = (updatedList) => {
+  const saveOrderToLocal = async (updatedList) => {
     const currentSegment = activeSegmentRef.current;
     const key = currentSegment === 'apps' ? 'school_apps_order' : 'school_teachers_order';
     const cacheKey = currentSegment === 'apps' ? 'school_apps_cache' : 'school_teachers_cache';
     const orderIds = updatedList.map(item => String(item.ID));
-    localStorage.setItem(key, JSON.stringify(orderIds));
+    const orderStr = JSON.stringify(orderIds);
+    localStorage.setItem(key, orderStr);
     localStorage.removeItem(cacheKey);
-    console.log(`Order for ${currentSegment} saved automatically`);
+    console.log(`Order for ${currentSegment} saved locally`);
+    
+    // Save to remote server so all apps sync
+    if (API_URL !== "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE") {
+      try {
+        await fetch(API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: JSON.stringify({
+            action: 'updateConfig',
+            data: { key: key, value: orderStr }
+          })
+        });
+        console.log(`Order for ${currentSegment} synced to server`);
+      } catch (err) {
+        console.error('Failed to sync order:', err);
+      }
+    }
   };
 
   const handleDragEnd = () => {
