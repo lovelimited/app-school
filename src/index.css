@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
+@theme {
+  --color-accent: #6366f1;
+  --color-accent-light: #818cf8;
+  --color-accent-dark: #4f46e5;
+  --font-sans: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 :root {
   --font-sans: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
 

@@ -34,28 +34,8 @@ export default function StudentForm({ student, onSave, onCancel, saving }) {
     parent_phone: student.parent_phone || '',
     photo_url: student.photo_url || '',
     row: student.row,
-    gender: student.gender || 'ชาย',
-    birth_date: student.birth_date || '',
-    latest_weight_kg: student.latest_weight_kg || '',
-    latest_height_cm: student.latest_height_cm || '',
-    latest_bmi: student.latest_bmi || '',
-    latest_bmi_level: student.latest_bmi_level || '',
-    มา_ท1: student.มา_ท1 || '',
-    ขาด_ท1: student.ขาด_ท1 || '',
-    ลา_ท1: student.ลา_ท1 || '',
-    สาย_ท1: student.สาย_ท1 || '',
-    มา_ท2: student.มา_ท2 || '',
-    ขาด_ท2: student.ขาด_ท2 || '',
-    ลา_ท2: student.ลา_ท2 || '',
-    สาย_ท2: student.สาย_ท2 || '',
   } : {
     ...emptyForm,
-    gender: 'ชาย',
-    birth_date: '',
-    latest_weight_kg: '',
-    latest_height_cm: '',
-    มา_ท1: '', ขาด_ท1: '', ลา_ท1: '', สาย_ท1: '',
-    มา_ท2: '', ขาด_ท2: '', ลา_ท2: '', สาย_ท2: '',
   });
 
   const [phoneArr, setPhoneArr] = useState(() => {
@@ -72,24 +52,7 @@ export default function StudentForm({ student, onSave, onCancel, saving }) {
   
   const handleChange = (field, value) => {
     setForm(prev => {
-      const next = { ...prev, [field]: value };
-      
-      // Auto-calculate BMI if weight/height changes
-      if (field === 'latest_weight_kg' || field === 'latest_height_cm') {
-        const w = parseFloat(field === 'latest_weight_kg' ? value : next.latest_weight_kg);
-        const h = parseFloat(field === 'latest_height_cm' ? value : next.latest_height_cm);
-        
-        if (w && h) {
-          const bmi = (w / ((h / 100) ** 2)).toFixed(1);
-          next.latest_bmi = bmi;
-          // next.latest_bmi_level left for manual/sheet entry
-        } else {
-          next.latest_bmi = '';
-          next.latest_bmi_level = '';
-        }
-      }
-      
-      return next;
+      return { ...prev, [field]: value };
     });
   };
 
@@ -142,7 +105,16 @@ export default function StudentForm({ student, onSave, onCancel, saving }) {
     };
 
     const finalForm = {
-      ...form,
+      student_id: form.student_id,
+      national_id: form.national_id,
+      prefix: form.prefix,
+      first_name: form.first_name,
+      last_name: form.last_name,
+      nickname: form.nickname,
+      class_level: form.class_level,
+      address: form.address,
+      photo_url: form.photo_url,
+      row: form.row,
       // Prepend ' to force Google Sheets to treat as literal text (preserving leading 0)
       phone: phoneArr.length > 0 ? "'" + splitAndFormat(phoneArr) : "",
       parent_phone: parentPhoneArr.length > 0 ? "'" + splitAndFormat(parentPhoneArr) : ""
@@ -343,120 +315,6 @@ export default function StudentForm({ student, onSave, onCancel, saving }) {
               <p className="text-xs text-gray-400 mt-1">ลิงก์รูปภาพ (Google Drive, เว็บไซต์, ฯลฯ)</p>
             </div>
 
-            <div className="h-px bg-gray-100 my-2"></div>
-            
-            {/* Health Section */}
-            <div>
-              <h3 className="text-[12px] font-bold text-indigo-500 uppercase tracking-wider mb-3">ข้อมูลสุขภาพ</h3>
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1.5">เพศ</label>
-                  <select
-                    className={inputClass}
-                    value={form.gender}
-                    onChange={e => handleChange('gender', e.target.value)}
-                  >
-                    {GENDERS.map(g => <option key={g} value={g}>{g}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1.5">วันเกิด</label>
-                  <input
-                    className={inputClass}
-                    type="date"
-                    value={form.birth_date}
-                    onChange={e => handleChange('birth_date', e.target.value)}
-                  />
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1.5">น้ำหนัก (กก.)</label>
-                  <input
-                    className={inputClass}
-                    type="number"
-                    step="0.1"
-                    value={form.latest_weight_kg}
-                    onChange={e => handleChange('latest_weight_kg', e.target.value)}
-                    placeholder="0.0"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1.5">ส่วนสูง (ซม.)</label>
-                  <input
-                    className={inputClass}
-                    type="number"
-                    step="0.1"
-                    value={form.latest_height_cm}
-                    onChange={e => handleChange('latest_height_cm', e.target.value)}
-                    placeholder="0.0"
-                  />
-                </div>
-              </div>
-              
-              <div className="bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100 grid grid-cols-2 gap-4">
-                <div>
-                  <div className="text-[10px] text-indigo-400 font-bold uppercase tracking-wider mb-1">ดัชนีมวลกาย (BMI)</div>
-                  <div className="text-xl font-black text-indigo-600">{form.latest_bmi || '-'}</div>
-                </div>
-                <div>
-                  <div className="text-[10px] text-indigo-400 font-bold uppercase tracking-wider mb-1">ระดับ BMI</div>
-                  <div className="text-sm font-bold text-indigo-600">{form.latest_bmi_level || 'ระบุ นน./สส.'}</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="h-px bg-gray-100 my-2"></div>
-
-            {/* Attendance Section */}
-            <div>
-              <h3 className="text-[12px] font-bold text-indigo-500 uppercase tracking-wider mb-3">สรุปการมาเรียน</h3>
-              
-              {[1, 2].map(term => (
-                <div key={term} className="mb-4 last:mb-0">
-                  <div className="text-[11px] font-bold text-gray-400 mb-2 px-1">ภาคเรียนที่ {term}</div>
-                  <div className="grid grid-cols-4 gap-2">
-                    <div>
-                      <label className="block text-[10px] text-gray-400 mb-1 text-center">มา</label>
-                      <input
-                        className={`${inputClass} !px-2 text-center`}
-                        type="number"
-                        value={form[`มา_ท${term}`]}
-                        onChange={e => handleChange(`มา_ท${term}`, e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] text-gray-400 mb-1 text-center">ขาด</label>
-                      <input
-                        className={`${inputClass} !px-2 text-center`}
-                        type="number"
-                        value={form[`ขาด_ท${term}`]}
-                        onChange={e => handleChange(`ขาด_ท${term}`, e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] text-gray-400 mb-1 text-center">ลา</label>
-                      <input
-                        className={`${inputClass} !px-2 text-center`}
-                        type="number"
-                        value={form[`ลา_ท${term}`]}
-                        onChange={e => handleChange(`ลา_ท${term}`, e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] text-gray-400 mb-1 text-center">สาย</label>
-                      <input
-                        className={`${inputClass} !px-2 text-center`}
-                        type="number"
-                        value={form[`สาย_ท${term}`]}
-                        onChange={e => handleChange(`สาย_ท${term}`, e.target.value)}
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
           
           {/* Footer Buttons */}
